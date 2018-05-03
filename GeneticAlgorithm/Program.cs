@@ -12,7 +12,7 @@ namespace GeneticAlgorithm
         private const double MUTATE_RATE = 0.01;
         private const double BREED_RATE = 0.75;
         private const int POPULATION_SIZE = 1000;
-        private const string TARGET = "Hello, World!";
+        private const string TARGET = "Hello, Cruel World!";
 
         private static void Main()
         {
@@ -26,7 +26,7 @@ namespace GeneticAlgorithm
             do
             {
                 generation++;
-                Console.WriteLine(population.Length);
+                
                 IOrderedEnumerable<(string value, int score)> results = population.Select(CheckFitness).OrderByDescending(x => x.score);
                 if (results.First().value != TARGET)
                 {
@@ -72,11 +72,14 @@ namespace GeneticAlgorithm
         {
             var p = new string[POPULATION_SIZE];
             for (var i = 0; i < POPULATION_SIZE; ++i) {
-                var x = "";
-                foreach(var c in TARGET) {
-                    x += GenerateCharacter();
-                }
-                p[i] = x;
+                p[i] = string.Create(TARGET.Length, Random, 
+                    (Span<char> chars, Random r) =>
+                {
+                    for (int j = 0; j < chars.Length; j++)
+                    {
+                        chars[j] = GenerateCharacter();
+                    }
+                });
             }
             return p;
         }
