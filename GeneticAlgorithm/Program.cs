@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -50,7 +51,7 @@ namespace GeneticAlgorithm
             Console.ReadLine();
         }
 
-        private static char GenerateCharacter() => (char)Random.Next(32, 32 + 94);
+        private static char GenerateCharacter(this Random r) => (char)r.Next(32, 32 + 94);
 
         private static (string value, int score) SelectParent(IReadOnlyList<(string value, int score)> elders, int totalScore)
         {
@@ -72,12 +73,11 @@ namespace GeneticAlgorithm
         {
             var p = new string[POPULATION_SIZE];
             for (var i = 0; i < POPULATION_SIZE; ++i) {
-                p[i] = string.Create(TARGET.Length, Random, 
-                    (Span<char> chars, Random r) =>
+                p[i] = string.Create(TARGET.Length, Random, (Span<char> chars, Random r) =>
                 {
                     for (int j = 0; j < chars.Length; j++)
                     {
-                        chars[j] = GenerateCharacter();
+                        chars[j] = r.GenerateCharacter();
                     }
                 });
             }
