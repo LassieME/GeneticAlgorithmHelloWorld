@@ -102,7 +102,7 @@ namespace GeneticAlgorithm
             {
                 if (Random.NextDouble() < MUTATE_RATE)
                 {
-                    c += GenerateCharacter();
+                    c += Random.GenerateCharacter();
                 }
                 else if (Random.NextDouble() < 0.5)
                 {
